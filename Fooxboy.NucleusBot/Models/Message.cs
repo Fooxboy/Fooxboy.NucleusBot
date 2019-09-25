@@ -5,9 +5,12 @@ using System.Text;
 
 namespace Fooxboy.NucleusBot.Models
 {
-    public class Message: VkNet.Model.Message
+    public class Message
     {
         public MessengerPlatform Platform { get; set; }
-        public PayloadNucleusBot PayloadNucleusBot { get; set; }
+        public VkNet.Model.Message MessageVK { get; set; }
+        public string Trigger { get; set; }
+        public Telegram.Bot.Types.Message MessageTG { get; set; }
+        
     }
 }

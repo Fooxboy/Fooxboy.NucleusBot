@@ -31,7 +31,7 @@ namespace Fooxboy.NucleusBot.Services
                 api = api ?? new VkApi();
                 api.Authorize(new ApiAuthParams()
                 {
-                    AccessToken = _settings.Token
+                    AccessToken = _settings.VKToken
                 }) ;
 
                 api.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams()

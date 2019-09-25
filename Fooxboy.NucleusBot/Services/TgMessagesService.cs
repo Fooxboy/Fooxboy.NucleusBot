@@ -46,7 +46,10 @@ namespace Fooxboy.NucleusBot.Services
 
         void MessageProcessor(object sender, MessageEventArgs e)
         {
-            NewMessageEvent.Invoke(e.Message);
+            var model = new Message();
+            model.Platform = Enums.MessengerPlatform.Telegam;
+            model.MessageTG = e.Message;
+            NewMessageEvent.Invoke(model);
         }
 
         void CallbackQueryProcessor(object sender, CallbackQueryEventArgs e)

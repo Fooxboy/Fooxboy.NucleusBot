@@ -115,21 +115,27 @@ namespace Fooxboy.NucleusBot.Services
 
                         if(type == "message_new")
                         {
+                            var model = new Message();
                             var obj = (JObject)update.Object;
-                            var model = obj.ToObject<Message>();
+                            var message = obj.ToObject<VkNet.Model.Message>();
                             model.Platform = Enums.MessengerPlatform.Vkontakte;
+                            model.MessageVK = message;
                             NewMessageEvent?.Invoke(model);
                         }else if(type == "message_reply")
                         {
+                            var model = new Message();
                             var obj = (JObject)update.Object;
-                            var model = obj.ToObject<Message>();
+                            var message = obj.ToObject<VkNet.Model.Message>();
                             model.Platform = Enums.MessengerPlatform.Vkontakte;
+                            model.MessageVK = message;
                             NewMessageReplyEvent?.Invoke(model);
                         }else if(type == "message_edit")
                         {
+                            var model = new Message();
                             var obj = (JObject)update.Object;
-                            var model = obj.ToObject<Message>();
+                            var message = obj.ToObject<VkNet.Model.Message>();
                             model.Platform = Enums.MessengerPlatform.Vkontakte;
+                            model.MessageVK = message;
                             MessageEditEvent?.Invoke(model);
                         }else if(type == "message_allow")
                         {
