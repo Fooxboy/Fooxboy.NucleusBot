@@ -7,8 +7,8 @@ namespace Fooxboy.NucleusBot.Services
 {
     public class MessageSenderService : IMessageSenderService
     {
-        private IGroupSettings _settings;
-        public MessageSenderService(IGroupSettings settings)
+        private IBotSettings _settings;
+        public MessageSenderService(IBotSettings settings)
         {
             _settings = settings;
         }

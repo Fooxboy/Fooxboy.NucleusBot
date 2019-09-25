@@ -52,13 +52,13 @@ namespace Fooxboy.NucleusBot.Services
         public event UserMessageAction GroupJoinEvent;
 
 
-        private IGroupSettings _settings;
+        private IBotSettings _settings;
         private ILoggerService _logger;
         private bool _isStart;
         private string _server;
         private string _key;
         private long _ts;
-        public LongPollService(IGroupSettings settings, ILoggerService logger)
+        public LongPollService(IBotSettings settings, ILoggerService logger)
         {
             _settings = settings;
             _logger = logger;

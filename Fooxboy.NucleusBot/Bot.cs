@@ -4,23 +4,36 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using VkNet.Model;
 
 namespace Fooxboy.NucleusBot
 {
     public class Bot:IBot
     {
-        private IGroupSettings _settings;
-        private IGetUpdateService _updater;
+        private IBotSettings _settings;
+        private List<IGetUpdateService> _updaters;
         private ILoggerService _logger;
         private IMessageSenderService _sender;
         private IProcessor _processor;
-        public Bot(IGroupSettings settings, IGetUpdateService updaterService = null, IMessageSenderService sender = null, IProcessor processor = null, ILoggerService logger = null)
+        public Bot(IBotSettings settings, List<IGetUpdateService> updaterServices = null, IMessageSenderService sender = null, IProcessor processor = null, ILoggerService logger = null)
         {
             Console.WriteLine("Fooxboy.NucleusBot. 2019. Версия: 0.1 alpha");
             Console.WriteLine("Инициалиация NucleusBot...");
             _logger = logger?? new LoggerService();
             _settings = settings;
-            _updater = updaterService?? new LongPollService(_settings, _logger);
+
+            if(updaterServices == null)
+            {
+                var list = new  List<IGetUpdateService>();
+                if (_settings.Messager == Enums.MessagerPlatform.Telegam) list.Add(null);
+                else if (_settings.Messager == Enums.MessagerPlatform.Vkontakte) list.Add(new Services.LongPollService(_settings, _logger));
+                else if(_settings.Messager == Enums.MessagerPlatform.VkontakteAndTelegram)
+                {
+                    list.Add(new Services.LongPollService(_settings, _logger));
+                    list.Add(null);
+                }
+            }
+            
             _sender = sender ?? new MessageSenderService(_settings);
             _processor = processor ?? new Processor(_logger, this);
         }
@@ -31,8 +44,12 @@ namespace Fooxboy.NucleusBot
         public void Start()
         {
             _logger.Trace("Запуск бота...");
-            _updater.NewMessageEvent += NewMessage;
-            Task.Run(() => _updater.Start());
+
+            foreach(var updater in _updaters)
+            {
+                updater.NewMessageEvent += NewMessage;
+                Task.Run(() => updater.Start());
+            }
         }
 
         private void NewMessage(Models.Message message)
