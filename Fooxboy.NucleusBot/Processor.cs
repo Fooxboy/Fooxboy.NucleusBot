@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VkNet.Model.Attachments;
 
 namespace Fooxboy.NucleusBot
 {
@@ -27,7 +28,10 @@ namespace Fooxboy.NucleusBot
                 message.PayloadNucleusBot = JsonConvert.DeserializeObject<PayloadNucleusBot>(message.Payload);
                 command = message.PayloadNucleusBot.Command;
             }
+        }
 
+        private void SearchCommand(string command, Message msg)
+        {
 
         }
     }
