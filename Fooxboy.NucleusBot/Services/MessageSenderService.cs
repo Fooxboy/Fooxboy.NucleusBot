@@ -1,4 +1,5 @@
-﻿using Fooxboy.NucleusBot.Interfaces;
+﻿using Fooxboy.NucleusBot.Enums;
+using Fooxboy.NucleusBot.Interfaces;
 using Ninject.Modules;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,12 @@ namespace Fooxboy.NucleusBot.Services
         {
             _settings = settings;
         }
-        public void Image(string to, string text = null, object image = null, long from = 0)
+        public void Image(string to, object image, MessengerPlatform platform, string text = null, long from = 0)
         {
             throw new NotImplementedException();
         }
 
-        public void Text(string text, long to, object keyboard = null, long from = 0)
+        public void Text(string text, long to, MessengerPlatform platform,  object keyboard = null, long from = 0)
         {
             throw new NotImplementedException();
         }

@@ -32,11 +32,8 @@ namespace Fooxboy.NucleusBot
                 message.PayloadNucleusBot = JsonConvert.DeserializeObject<PayloadNucleusBot>(message.Payload);
                 commandString = message.PayloadNucleusBot.Command;
             }
-
             var command = SearchCommand(commandString);
             if (command is null) return;
-
-            
         }
 
         private INucleusCommand SearchCommand(string command)

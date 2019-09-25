@@ -117,16 +117,19 @@ namespace Fooxboy.NucleusBot.Services
                         {
                             var obj = (JObject)update.Object;
                             var model = obj.ToObject<Message>();
+                            model.Platform = Enums.MessengerPlatform.Vkontakte;
                             NewMessageEvent?.Invoke(model);
                         }else if(type == "message_reply")
                         {
                             var obj = (JObject)update.Object;
                             var model = obj.ToObject<Message>();
+                            model.Platform = Enums.MessengerPlatform.Vkontakte;
                             NewMessengereplyEvent?.Invoke(model);
                         }else if(type == "message_edit")
                         {
                             var obj = (JObject)update.Object;
                             var model = obj.ToObject<Message>();
+                            model.Platform = Enums.MessengerPlatform.Vkontakte;
                             MessageEditEvent?.Invoke(model);
                         }else if(type == "message_allow")
                         {

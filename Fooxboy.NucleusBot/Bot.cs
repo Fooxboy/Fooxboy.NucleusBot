@@ -25,7 +25,6 @@ namespace Fooxboy.NucleusBot
         {
             Console.WriteLine("Fooxboy.NucleusBot. 2019. Версия: 0.1 alpha");
             Console.WriteLine("Инициалиация NucleusBot...");
-
             IKernel kernel = new StandardKernel(new NinjectConfigModule());
             _logger = logger?? new LoggerService();
             _settings = settings;
@@ -41,9 +40,8 @@ namespace Fooxboy.NucleusBot
                     list.Add(null);
                 }
             }
-            
             _sender = sender ?? new MessageSenderService(_settings);
-            _processor = processor ?? new Processor(_logger, this);
+            _processor = processor ?? new Processor(_logger, this, kernel);
         }
 
         /// <summary>
