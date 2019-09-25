@@ -33,9 +33,9 @@ namespace Fooxboy.NucleusBot
             if(updaterServices == null)
             {
                 var list = new  List<IGetUpdateService>();
-                if (_settings.Messager == Enums.MessagerPlatform.Telegam) list.Add(null);
-                else if (_settings.Messager == Enums.MessagerPlatform.Vkontakte) list.Add(new Services.LongPollService(_settings, _logger));
-                else if(_settings.Messager == Enums.MessagerPlatform.VkontakteAndTelegram)
+                if (_settings.Messenger == Enums.MessengerPlatform.Telegam) list.Add(null);
+                else if (_settings.Messenger == Enums.MessengerPlatform.Vkontakte) list.Add(new Services.LongPollService(_settings, _logger));
+                else if(_settings.Messenger == Enums.MessengerPlatform.VkontakteAndTelegram)
                 {
                     list.Add(new Services.LongPollService(_settings, _logger));
                     list.Add(null);

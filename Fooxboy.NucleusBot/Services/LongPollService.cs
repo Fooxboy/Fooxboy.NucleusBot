@@ -24,7 +24,7 @@ namespace Fooxboy.NucleusBot.Services
         /// <summary>
         /// Новое исходящее сообщение.
         /// </summary>
-        public event NewMessageDelegate NewMessageReplyEvent;
+        public event NewMessageDelegate NewMessengereplyEvent;
 
         /// <summary>
         /// Измененное сообщение.
@@ -122,7 +122,7 @@ namespace Fooxboy.NucleusBot.Services
                         {
                             var obj = (JObject)update.Object;
                             var model = obj.ToObject<Message>();
-                            NewMessageReplyEvent?.Invoke(model);
+                            NewMessengereplyEvent?.Invoke(model);
                         }else if(type == "message_edit")
                         {
                             var obj = (JObject)update.Object;
