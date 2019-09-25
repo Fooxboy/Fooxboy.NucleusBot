@@ -1,4 +1,5 @@
 ﻿using Fooxboy.NucleusBot.Interfaces;
+using Ninject.Modules;
 using System;
 using System.Collections.Generic;
 using System.Text;

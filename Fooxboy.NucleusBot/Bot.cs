@@ -1,9 +1,12 @@
 ﻿using Fooxboy.NucleusBot.Interfaces;
+using Fooxboy.NucleusBot.Models;
 using Fooxboy.NucleusBot.Services;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using VkNet.Exception;
 using VkNet.Model;
 
 namespace Fooxboy.NucleusBot
@@ -15,10 +18,15 @@ namespace Fooxboy.NucleusBot
         private ILoggerService _logger;
         private IMessageSenderService _sender;
         private IProcessor _processor;
+
+        public List<INucleusCommand> Commands { get; set; }
+
         public Bot(IBotSettings settings, List<IGetUpdateService> updaterServices = null, IMessageSenderService sender = null, IProcessor processor = null, ILoggerService logger = null)
         {
             Console.WriteLine("Fooxboy.NucleusBot. 2019. Версия: 0.1 alpha");
             Console.WriteLine("Инициалиация NucleusBot...");
+
+            IKernel kernel = new StandardKernel(new NinjectConfigModule());
             _logger = logger?? new LoggerService();
             _settings = settings;
 
