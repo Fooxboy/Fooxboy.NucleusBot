@@ -24,7 +24,7 @@ namespace Fooxboy.NucleusBot.Services
         /// <summary>
         /// Новое исходящее сообщение.
         /// </summary>
-        public event NewMessageDelegate NewMessengereplyEvent;
+        public event NewMessageDelegate NewMessageReplyEvent;
 
         /// <summary>
         /// Измененное сообщение.
@@ -65,7 +65,7 @@ namespace Fooxboy.NucleusBot.Services
         }
         public void Start()
         {
-            if (_settings.Token == null || _settings.Token == "")
+            if (_settings.VKToken == null || _settings.VKToken == "")
             {
                 _logger.Error("Не был указан токен");
                 throw new ArgumentNullException("Вы не указали токен");
@@ -122,7 +122,7 @@ namespace Fooxboy.NucleusBot.Services
                         {
                             var obj = (JObject)update.Object;
                             var model = obj.ToObject<Message>();
-                            NewMessengereplyEvent?.Invoke(model);
+                            NewMessageReplyEvent?.Invoke(model);
                         }else if(type == "message_edit")
                         {
                             var obj = (JObject)update.Object;
@@ -177,7 +177,7 @@ namespace Fooxboy.NucleusBot.Services
 
             using (var client = new WebClient())
             {
-                json = client.DownloadString($"https://api.vk.com/method/groups.getLongPollServer?group_id={_settings.GroupId}&access_token={_settings.Token}&v=5.92");
+                json = client.DownloadString($"https://api.vk.com/method/groups.getLongPollServer?group_id={_settings.GroupId}&access_token={_settings.VKToken}&v=5.92");
             }
 
             var model = JsonConvert.DeserializeObject<Models.KeyAndServerModel>(json);

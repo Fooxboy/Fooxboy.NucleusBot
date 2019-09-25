@@ -15,7 +15,7 @@ namespace Fooxboy.NucleusBot.Interfaces
         /// <summary>
         /// Новое исходящее сообщение.
         /// </summary>
-        event NewMessageDelegate NewMessengereplyEvent;
+        event NewMessageDelegate NewMessageReplyEvent;
 
         /// <summary>
         /// Измененное сообщение.

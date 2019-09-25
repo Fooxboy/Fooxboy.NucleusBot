@@ -8,7 +8,8 @@ namespace Fooxboy.NucleusBot.Interfaces
     public interface IBotSettings
     {
         MessengerPlatform Messenger { get; set; }
-        string Token { get; set; }
+        string VKToken { get; set; }
+        string TGToken { get; set; }
         long GroupId { get; set; }
     }
 }
