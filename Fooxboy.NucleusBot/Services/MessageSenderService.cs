@@ -4,12 +4,15 @@ using Ninject.Modules;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VkNet;
 
 namespace Fooxboy.NucleusBot.Services
 {
     public class MessageSenderService : IMessageSenderService
     {
         private IBotSettings _settings;
+
+        public static VkApi api;
         public MessageSenderService(IBotSettings settings)
         {
             _settings = settings;
@@ -21,7 +24,13 @@ namespace Fooxboy.NucleusBot.Services
 
         public void Text(string text, long to, MessengerPlatform platform,  object keyboard = null, long from = 0)
         {
-            throw new NotImplementedException();
+            if(platform == MessengerPlatform.Vkontakte)
+            {
+                api = api ?? new VkApi();
+                
+            }
+            
+            //throw new NotImplementedException();
         }
     }
 }
