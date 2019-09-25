@@ -7,7 +7,7 @@ namespace Fooxboy.NucleusBot.Interfaces
 {
     public interface IBotSettings
     {
-        MessagerPlatform Messager { get; set; }
+        MessengerPlatform Messenger { get; set; }
         string Token { get; set; }
         long GroupId { get; set; }
     }

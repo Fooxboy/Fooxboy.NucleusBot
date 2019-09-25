@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Fooxboy.NucleusBot.Enums
 {
-    public enum MessagerPlatform
+    public enum MessengerPlatform
     {
         Vkontakte = 1, Telegam = 2, VkontakteAndTelegram = 3
     }
