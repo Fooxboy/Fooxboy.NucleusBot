@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VkNet;
+using VkNet.Model;
+using VkNet.Model.Keyboard;
 
 namespace Fooxboy.NucleusBot.Services
 {
@@ -27,7 +29,17 @@ namespace Fooxboy.NucleusBot.Services
             if(platform == MessengerPlatform.Vkontakte)
             {
                 api = api ?? new VkApi();
-                
+                api.Authorize(new ApiAuthParams()
+                {
+                    AccessToken = _settings.Token
+                }) ;
+
+                api.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams()
+                {
+                    Keyboard = (MessageKeyboard)keyboard,
+                    Message = text,
+                    ChatId = to,
+                });
             }
             
             //throw new NotImplementedException();
