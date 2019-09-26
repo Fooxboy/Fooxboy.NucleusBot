@@ -4,6 +4,8 @@ using Ninject.Modules;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Telegram.Bot;
+using Telegram.Bot.Types.ReplyMarkups;
 using VkNet;
 using VkNet.Model;
 using VkNet.Model.Keyboard;
@@ -13,7 +15,7 @@ namespace Fooxboy.NucleusBot.Services
     public class MessageSenderService : IMessageSenderService
     {
         private IBotSettings _settings;
-
+        private ITelegramBotClient tgbot;
         public static VkApi api;
         public MessageSenderService(IBotSettings settings)
         {
@@ -40,6 +42,15 @@ namespace Fooxboy.NucleusBot.Services
                     Message = text,
                     ChatId = to,
                 });
+            }
+            else
+            {
+                tgbot = new TelegramBotClient(_settings.TGToken);
+                var msgSendTask = tgbot.SendTextMessageAsync(
+                    chatId: to,
+                    text: text,
+                    replyMarkup: (ReplyKeyboardMarkup)keyboard
+                );
             }
             
             //throw new NotImplementedException();
