@@ -11,6 +11,7 @@ namespace Fooxboy.NucleusBot.Interfaces
         /// Текст на который бот будет реагировать на команду.
         /// </summary>
         string Command { get; }
+        string[] Aliases { get; set; }
 
         /// <summary>
         /// Метод, который будет выполнятся, когда пользователь напишит команду 

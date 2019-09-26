@@ -62,14 +62,13 @@ namespace Fooxboy.NucleusBot
         {
             Task.Run(() =>
             {
-                _logger.Trace($"Новое сообщение: {message.Text}");
                 _processor.Start(message);
             });
         }
 
         public void Stop()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
