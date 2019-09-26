@@ -4,6 +4,7 @@ using Fooxboy.NucleusBot.Services;
 using Ninject;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VkNet.Exception;
@@ -18,6 +19,7 @@ namespace Fooxboy.NucleusBot
         private ILoggerService _logger;
         private IMessageSenderService _sender;
         private IProcessor _processor;
+        private Dictionary<string, string> _aliasesCommand;
 
         public List<INucleusCommand> Commands { get; set; }
 
@@ -32,16 +34,23 @@ namespace Fooxboy.NucleusBot
             if(updaterServices == null)
             {
                 var list = new  List<IGetUpdateService>();
-                if (_settings.Messenger == Enums.MessengerPlatform.Telegam) list.Add(null);
+                if (_settings.Messenger == Enums.MessengerPlatform.Telegam) list.Add(new Services.TgMessagesService(_settings, _logger));
                 else if (_settings.Messenger == Enums.MessengerPlatform.Vkontakte) list.Add(new Services.LongPollService(_settings, _logger));
                 else if(_settings.Messenger == Enums.MessengerPlatform.VkontakteAndTelegram)
                 {
                     list.Add(new Services.LongPollService(_settings, _logger));
-                    list.Add(null);
+                    list.Add(new Services.TgMessagesService(_settings, _logger));
                 }
             }
+            _aliasesCommand = new Dictionary<string, string>();
             _sender = sender ?? new MessageSenderService(_settings);
             _processor = processor ?? new Processor(_logger, this, kernel);
+        }
+
+
+        public void SetCommands(params INucleusCommand[] commands)
+        {
+            this.Commands = commands.ToList();
         }
 
         /// <summary>
@@ -51,20 +60,22 @@ namespace Fooxboy.NucleusBot
         {
             _logger.Trace("Запуск бота...");
 
-            foreach(var updater in _updaters)
+            if (this.Commands == null) throw new ArgumentNullException("Команды не были инициализированны. Используйте метод SetCommands.");
+            foreach (var command in this.Commands)
+            {
+                _logger.Trace($"Инициализация команды {command.Command}...");
+                foreach (var alias in command.Aliases) _aliasesCommand.Add(alias, command.Command);
+                command.Init(this);
+            }
+
+            foreach (var updater in _updaters)
             {
                 updater.NewMessageEvent += NewMessage;
                 Task.Run(() => updater.Start());
             }
         }
 
-        private void NewMessage(Models.Message message)
-        {
-            Task.Run(() =>
-            {
-                _processor.Start(message);
-            });
-        }
+        private void NewMessage(Models.Message message)=> Task.Run(() => _processor.Start(message));
 
         public void Stop()
         {
