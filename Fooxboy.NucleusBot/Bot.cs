@@ -102,8 +102,15 @@ namespace Fooxboy.NucleusBot
             foreach (var command in this.Commands)
             {
                 _logger.Trace($"Инициализация команды {command.Command}...");
-                foreach (var alias in command.Aliases) AliasesCommand.Add(alias, command.Command);
-                command.Init(this);
+                if(command.Aliases != null) foreach (var alias in command.Aliases) AliasesCommand.Add(alias, command.Command);
+                try
+                {
+                    command.Init(this, _logger);
+                }catch(Exception e)
+                {
+                    _logger.Error($"Произошла ошибка при инициализации команды {command.Command}: \n {e}");
+                }
+                
             }
 
             foreach (var updater in _updaters)

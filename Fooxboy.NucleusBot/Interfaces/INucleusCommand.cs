@@ -11,7 +11,7 @@ namespace Fooxboy.NucleusBot.Interfaces
         /// Текст на который бот будет реагировать на команду.
         /// </summary>
         string Command { get; }
-        string[] Aliases { get; set; }
+        string[] Aliases { get; }
 
         /// <summary>
         /// Метод, который будет выполнятся, когда пользователь напишит команду 
@@ -23,6 +23,6 @@ namespace Fooxboy.NucleusBot.Interfaces
         /// <summary>
         /// Метод, который вызывается при запуске для инициализации. Может быть пустым.
         /// </summary>
-        void Init(IBot bot);
+        void Init(IBot bot, ILoggerService logger);
     }
 }
