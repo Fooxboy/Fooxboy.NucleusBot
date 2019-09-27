@@ -59,7 +59,14 @@ namespace Fooxboy.NucleusBot
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
             IMessageSenderService sender = _bot.SenderServices.Single(s => s.Platform == msg.Platform);
-            command.Execute(msg, sender, _bot);
+            try
+            {
+                command.Execute(msg, sender, _bot);
+            }catch(Exception e)
+            {
+                _logger.Error($"Произошла ошибка в команде {command.Command}: \n {e}");
+            }
+            
             sw.Stop();
             _logger.Trace($"Команда {command.Command} выполнялась {sw.ElapsedMilliseconds} ms");
         }

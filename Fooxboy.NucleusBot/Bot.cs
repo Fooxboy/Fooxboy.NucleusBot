@@ -18,6 +18,7 @@ namespace Fooxboy.NucleusBot
         private List<IGetUpdateService> _updaters;
         private ILoggerService _logger;
         private IProcessor _processor;
+        private List<INucleusService> _botServices;
 
         public List<IMessageSenderService> SenderServices { get;  set; }
         public Dictionary<string, string> AliasesCommand { get; set; }
@@ -64,11 +65,9 @@ namespace Fooxboy.NucleusBot
         }
 
 
-        public void SetCommands(params INucleusCommand[] commands)
-        {
-            this.Commands = commands.ToList();
-        }
+        public void SetCommands(params INucleusCommand[] commands) => this.Commands = commands.ToList();
 
+        public void SetServices(params INucleusService[] services)=> this._botServices = services.ToList();
         /// <summary>
         /// Запустить бота.
         /// </summary>
@@ -88,6 +87,12 @@ namespace Fooxboy.NucleusBot
             {
                 updater.NewMessageEvent += NewMessage;
                 Task.Run(() => updater.Start());
+            }
+
+            foreach(var service in this._botServices)
+            {
+                _logger.Trace($"Запуск сервиса {service.Name}");
+                Task.Run(() => service.Start(this, _settings, SenderServices, _logger)); 
             }
         }
 

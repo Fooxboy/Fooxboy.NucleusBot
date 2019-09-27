@@ -11,5 +11,8 @@ namespace Fooxboy.NucleusBot.Interfaces
         Dictionary<string, string> AliasesCommand { get; set; }
         void Start();
         void Stop();
+
+        void SetCommands(params INucleusCommand[] commands);
+        void SetServices(params INucleusService[] services);
     }
 }

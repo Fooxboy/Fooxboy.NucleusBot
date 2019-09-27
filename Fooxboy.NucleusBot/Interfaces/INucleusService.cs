@@ -6,7 +6,9 @@ namespace Fooxboy.NucleusBot.Interfaces
 {
     public interface INucleusService
     {
-        void Start(IBot bot, IBotSettings settings, IMessageSenderService sender, ILoggerService logger);
+        string Name { get; set; }
+        bool IsRunning { get; }
+        void Start(IBot bot, IBotSettings settings, List<IMessageSenderService> senders, ILoggerService logger);
         void Stop();
         
     }
