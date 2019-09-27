@@ -5,7 +5,7 @@ namespace Fooxboy.NucleusBot.Models
 {
     public class NucleusKeyboard : INucleusKeyboard
     {
-        public List<List<INucleusKeyboardButton>> Keyboard { get; set; }
+        public List<List<INucleusKeyboardButton>> Buttons { get; set; }
         public bool OneTimeKeyboard { get; set; }
         public bool ResizeKeyboard { get; set; }
         public bool Selective { get; set; }

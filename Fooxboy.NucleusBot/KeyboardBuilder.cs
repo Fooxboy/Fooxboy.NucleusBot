@@ -65,7 +65,7 @@ namespace Fooxboy.NucleusBot
             _fullKeyboard.Add(_currentLine);
             return new NucleusKeyboard()
             {
-                Keyboard = _fullKeyboard,
+                Buttons = _fullKeyboard,
                 OneTimeKeyboard = _oneTimeKb,
                 Selective = _isSelective,
                 ResizeKeyboard = _resizeKb

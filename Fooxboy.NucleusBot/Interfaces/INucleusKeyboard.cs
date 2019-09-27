@@ -5,7 +5,7 @@ namespace Fooxboy.NucleusBot.Interfaces
 {
     public interface INucleusKeyboard
     {
-        List<List<INucleusKeyboardButton>> Keyboard { get; set; }
+        List<List<INucleusKeyboardButton>> Buttons { get; set; }
         /// <summary>
         /// Если true, клавиатура будет скрыта сразу после использования
         /// </summary>

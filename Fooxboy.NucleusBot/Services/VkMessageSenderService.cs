@@ -36,6 +36,12 @@ namespace Fooxboy.NucleusBot.Services
                 AccessToken = _settings.VKToken
             });
 
+            var readyKeyboard = new MessageKeyboard();
+            readyKeyboard.OneTime = keyboard.OneTimeKeyboard;
+
+            var builder = new VkNet.Model.Keyboard.KeyboardBuilder(keyboard.OneTimeKeyboard);
+            foreach(var buttons in keyboard.)
+
             api.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams()
             {
                 Keyboard = (MessageKeyboard)keyboard,
