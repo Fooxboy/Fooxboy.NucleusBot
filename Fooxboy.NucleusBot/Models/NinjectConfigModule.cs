@@ -11,7 +11,7 @@ namespace Fooxboy.NucleusBot.Models
     {
         public override void Load()
         {
-            Bind<IMessageSenderService>().To<MessageSenderService>();
+            //Bind<IBot>().To<MessageSenderService>();
         }
     }
 }

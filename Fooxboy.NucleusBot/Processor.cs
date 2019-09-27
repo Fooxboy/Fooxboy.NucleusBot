@@ -50,7 +50,7 @@ namespace Fooxboy.NucleusBot
                 foreach(var alias in _bot.AliasesCommand) if (alias.Key == commandString) commandStr = alias.Value;
                 if (commandStr != null) command = _bot.Commands.Find(c => c.Command.ToLower() == commandString.ToLower());
             }
-            if (command == null) return null; //TODO: вызываем команду которая отвечает за то што команда не найдена.
+            if (command == null) return _bot.UnknownCommand;
             return command;
         }
 
