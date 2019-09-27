@@ -28,7 +28,7 @@ namespace Fooxboy.NucleusBot.Services
             throw new NotImplementedException();
         }
 
-        public void Text(string text, long to, object keyboard = null, long from = 0)
+        public void Text(string text, long to, INucleusKeyboard keyboard = null, long from = 0)
         {
             api = api ?? new VkApi();
             api.Authorize(new ApiAuthParams()

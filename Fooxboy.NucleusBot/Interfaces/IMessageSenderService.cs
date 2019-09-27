@@ -18,7 +18,7 @@ namespace Fooxboy.NucleusBot.Interfaces
         /// <param name="to">Кому отправить</param>
         /// <param name="keyboard">Клавиатура</param>
         /// <param name="from">От кого</param>
-        void Text(string text, long to, object keyboard = null, long from = 0);
+        void Text(string text, long to, INucleusKeyboard keyboard = null, long from = 0);
         /// <summary>
         /// Отправить изображение
         /// </summary>
