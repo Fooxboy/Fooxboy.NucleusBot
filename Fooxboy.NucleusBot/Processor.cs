@@ -26,9 +26,16 @@ namespace Fooxboy.NucleusBot
         {
             _logger.Trace("Начало обработки сообщения.");
             var commandString = string.Empty;
-            if(message.Platform == Enums.MessengerPlatform.Telegam) commandString = message.MessageTG.Text.Split(' ')[0];
+            if(message.Platform == Enums.MessengerPlatform.Telegam)
+            {
+                commandString = message.MessageTG.Text.Split(' ')[0];
+                message.Text = message.MessageTG.Text;
+                message.ChatId = message.MessageTG.Chat.Id;
+            }
             else if(message.Platform == Enums.MessengerPlatform.Vkontakte)
             {
+                message.Text = message.MessageVK.Text;
+                message.ChatId = message.MessageVK.ChatId ?? message.MessageVK.PeerId.Value;
                 if (message.MessageVK.Payload == null) commandString = message.MessageVK.Text.Split(' ')[0];
                 else
                 {
@@ -50,7 +57,7 @@ namespace Fooxboy.NucleusBot
                 foreach(var alias in _bot.AliasesCommand) if (alias.Key == commandString) commandStr = alias.Value;
                 if (commandStr != null) command = _bot.Commands.Find(c => c.Command.ToLower() == commandString.ToLower());
             }
-            if (command == null) return null; //TODO: вызываем команду которая отвечает за то што команда не найдена.
+            if (command == null) return _bot.UnknownCommand;
             return command;
         }
 
@@ -59,7 +66,15 @@ namespace Fooxboy.NucleusBot
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
             IMessageSenderService sender = _bot.SenderServices.Single(s => s.Platform == msg.Platform);
-            command.Execute(msg, sender, _bot);
+            try
+            {
+                msg.Trigger = command.Command;
+                command.Execute(msg, sender, _bot);
+            }catch(Exception e)
+            {
+                _logger.Error($"Произошла ошибка в команде {command.Command}: \n {e}");
+            }
+            
             sw.Stop();
             _logger.Trace($"Команда {command.Command} выполнялась {sw.ElapsedMilliseconds} ms");
         }

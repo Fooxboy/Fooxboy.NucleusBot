@@ -18,12 +18,35 @@ namespace Fooxboy.NucleusBot
         private List<IGetUpdateService> _updaters;
         private ILoggerService _logger;
         private IProcessor _processor;
+        private List<INucleusService> _botServices;
 
+        /// <summary>
+        /// Команда, которая вызывается, когда ядро не смогло найти в Ваших командах нужную.
+        /// </summary>
+        public INucleusCommand UnknownCommand { get; set; }
+        /// <summary>
+        /// Сервисы, которые реализовывают отправку сообщений в определённый месседжер
+        /// </summary>
         public List<IMessageSenderService> SenderServices { get;  set; }
+        /// <summary>
+        /// Алиасы комманд.
+        /// </summary>
         public Dictionary<string, string> AliasesCommand { get; set; }
+        /// <summary>
+        /// Команды
+        /// </summary>
         public List<INucleusCommand> Commands { get; set; }
 
-        public Bot(IBotSettings settings, List<IGetUpdateService> updaterServices = null, List<IMessageSenderService> senders = null, IProcessor processor = null, ILoggerService logger = null)
+        /// <summary>
+        /// Bot
+        /// </summary>
+        /// <param name="settings">Настройки бота</param>
+        /// <param name="unknownCommand">Команда, которая вызывается, когда ядро не смогло найти в Ваших командах нужную, если пусто - используется встроенная.</param>
+        /// <param name="updaterServices">Сервивы получения сообщений, если пусто используются встроенные</param>
+        /// <param name="senders">Сервивы отправки сообщений, если пусто используются встроенные</param>
+        /// <param name="processor">Экзепляр класса обработки полученных сообщений, если пусто используется встроенный</param>
+        /// <param name="logger">Экзепляр класса логгера, если пусто используется встроенный.</param>
+        public Bot(IBotSettings settings, INucleusCommand unknownCommand = null, List<IGetUpdateService> updaterServices = null, List<IMessageSenderService> senders = null, IProcessor processor = null, ILoggerService logger = null)
         {
             Console.WriteLine("Fooxboy.NucleusBot. 2019. Версия: 0.1 alpha");
             Console.WriteLine("Инициалиация NucleusBot...");
@@ -47,6 +70,7 @@ namespace Fooxboy.NucleusBot
 
             if (senders == null)
             {
+                
                 var list = new List<IMessageSenderService>();
                 if (_settings.Messenger == Enums.MessengerPlatform.Telegam) list.Add(new Services.TgMessageSenderService(_settings, _logger));
                 else if (_settings.Messenger == Enums.MessengerPlatform.Vkontakte) list.Add(new Services.VkMessageSenderService(_settings, _logger));
@@ -64,11 +88,9 @@ namespace Fooxboy.NucleusBot
         }
 
 
-        public void SetCommands(params INucleusCommand[] commands)
-        {
-            this.Commands = commands.ToList();
-        }
+        public void SetCommands(params INucleusCommand[] commands) => this.Commands = commands.ToList();
 
+        public void SetServices(params INucleusService[] services)=> this._botServices = services.ToList();
         /// <summary>
         /// Запустить бота.
         /// </summary>
@@ -80,14 +102,27 @@ namespace Fooxboy.NucleusBot
             foreach (var command in this.Commands)
             {
                 _logger.Trace($"Инициализация команды {command.Command}...");
-                foreach (var alias in command.Aliases) AliasesCommand.Add(alias, command.Command);
-                command.Init(this);
+                if(command.Aliases != null) foreach (var alias in command.Aliases) AliasesCommand.Add(alias, command.Command);
+                try
+                {
+                    command.Init(this, _logger);
+                }catch(Exception e)
+                {
+                    _logger.Error($"Произошла ошибка при инициализации команды {command.Command}: \n {e}");
+                }
+                
             }
 
             foreach (var updater in _updaters)
             {
                 updater.NewMessageEvent += NewMessage;
                 Task.Run(() => updater.Start());
+            }
+
+            foreach(var service in this._botServices)
+            {
+                _logger.Trace($"Запуск сервиса {service.Name}...");
+                Task.Run(() => service.Start(this, _settings, SenderServices, _logger)); 
             }
         }
 
