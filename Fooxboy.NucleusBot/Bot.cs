@@ -61,8 +61,8 @@ namespace Fooxboy.NucleusBot
                 else if (_settings.Messenger == Enums.MessengerPlatform.Vkontakte) list.Add(new Services.LongPollService(_settings, _logger));
                 else if (_settings.Messenger == Enums.MessengerPlatform.VkontakteAndTelegram)
                 {
-                    list.Add(new Services.LongPollService(_settings, _logger));
-                    list.Add(new Services.TgMessagesService(_settings, _logger));
+                    list.Add(new LongPollService(_settings, _logger));
+                    list.Add(new TgMessagesService(_settings, _logger));
                 }
                 _updaters = list;
             }
@@ -76,14 +76,15 @@ namespace Fooxboy.NucleusBot
                 else if (_settings.Messenger == Enums.MessengerPlatform.Vkontakte) list.Add(new Services.VkMessageSenderService(_settings, _logger));
                 else if (_settings.Messenger == Enums.MessengerPlatform.VkontakteAndTelegram)
                 {
-                    list.Add(new Services.TgMessageSenderService(_settings, _logger));
-                    list.Add(new Services.VkMessageSenderService(_settings, _logger));
+                    list.Add(new TgMessageSenderService(_settings, _logger));
+                    list.Add(new VkMessageSenderService(_settings, _logger));
                 }
                 SenderServices = list;
             }
             else SenderServices = senders;
 
             AliasesCommand = new Dictionary<string, string>();
+            UnknownCommand = UnknownCommand ?? new UnknownCommand();
             _processor = processor ?? new Processor(_logger, this, kernel);
         }
 
