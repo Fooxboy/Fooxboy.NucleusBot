@@ -19,8 +19,8 @@ namespace Fooxboy.NucleusBot
         private ILoggerService _logger;
         private IMessageSenderService _sender;
         private IProcessor _processor;
-        private Dictionary<string, string> _aliasesCommand;
 
+        public Dictionary<string, string> AliasesCommand { get; set; }
         public List<INucleusCommand> Commands { get; set; }
 
         public Bot(IBotSettings settings, List<IGetUpdateService> updaterServices = null, IMessageSenderService sender = null, IProcessor processor = null, ILoggerService logger = null)
@@ -42,7 +42,7 @@ namespace Fooxboy.NucleusBot
                     list.Add(new Services.TgMessagesService(_settings, _logger));
                 }
             }
-            _aliasesCommand = new Dictionary<string, string>();
+            AliasesCommand = new Dictionary<string, string>();
             _sender = sender ?? new MessageSenderService(_settings);
             _processor = processor ?? new Processor(_logger, this, kernel);
         }
@@ -64,7 +64,7 @@ namespace Fooxboy.NucleusBot
             foreach (var command in this.Commands)
             {
                 _logger.Trace($"Инициализация команды {command.Command}...");
-                foreach (var alias in command.Aliases) _aliasesCommand.Add(alias, command.Command);
+                foreach (var alias in command.Aliases) AliasesCommand.Add(alias, command.Command);
                 command.Init(this);
             }
 

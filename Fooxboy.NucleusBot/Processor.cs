@@ -24,22 +24,33 @@ namespace Fooxboy.NucleusBot
         public void Start(Message message)
         {
             _logger.Trace("Начало обработки сообщения.");
-
             var commandString = string.Empty;
-            if (message.Payload == null) commandString = message.Text.Split(' ')[0];
-            else
+            if(message.Platform == Enums.MessengerPlatform.Telegam) commandString = message.MessageTG.Text.Split(' ')[0];
+            else if(message.Platform == Enums.MessengerPlatform.Vkontakte)
             {
-                message.PayloadNucleusBot = JsonConvert.DeserializeObject<PayloadNucleusBot>(message.Payload);
-                commandString = message.PayloadNucleusBot.Command;
+                if (message.MessageVK.Payload == null) commandString = message.MessageVK.Text.Split(' ')[0];
+                else
+                {
+                    var payload = JsonConvert.DeserializeObject<PayloadNucleusBot>(message.MessageVK.Payload);
+                    commandString = payload.Command;
+                }
             }
             var command = SearchCommand(commandString);
             if (command is null) return;
         }
 
-        private INucleusCommand SearchCommand(string command)
+        private INucleusCommand SearchCommand(string commandString)
         {
             _logger.Trace("Поиск команды...");
-            return _bot.Commands.Find(c => c.Command.ToLower() == command.ToLower());
+            var command = _bot.Commands.Find(c => c.Command.ToLower() == commandString.ToLower());
+            if (command == null)
+            {
+                var commandStr = string.Empty;
+                foreach(var alias in _bot.AliasesCommand) if (alias.Key == commandString) commandStr = alias.Value;
+                if (commandStr != null) command = _bot.Commands.Find(c => c.Command.ToLower() == commandString.ToLower());
+            }
+            if (command == null) return null; //TODO: вызываем команду которая отвечает за то што команда не найдена.
+            return command;
         }
 
         private void ExecuteCommand(INucleusCommand command, Message msg)
