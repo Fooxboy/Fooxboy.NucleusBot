@@ -17,13 +17,13 @@ namespace Fooxboy.NucleusBot
         private IBotSettings _settings;
         private List<IGetUpdateService> _updaters;
         private ILoggerService _logger;
-        private IMessageSenderService _sender;
         private IProcessor _processor;
 
+        public List<IMessageSenderService> SenderServices { get;  set; }
         public Dictionary<string, string> AliasesCommand { get; set; }
         public List<INucleusCommand> Commands { get; set; }
 
-        public Bot(IBotSettings settings, List<IGetUpdateService> updaterServices = null, IMessageSenderService sender = null, IProcessor processor = null, ILoggerService logger = null)
+        public Bot(IBotSettings settings, List<IGetUpdateService> updaterServices = null, List<IMessageSenderService> senders = null, IProcessor processor = null, ILoggerService logger = null)
         {
             Console.WriteLine("Fooxboy.NucleusBot. 2019. Версия: 0.1 alpha");
             Console.WriteLine("Инициалиация NucleusBot...");
@@ -31,19 +31,35 @@ namespace Fooxboy.NucleusBot
             _logger = logger?? new LoggerService();
             _settings = settings;
 
-            if(updaterServices == null)
+            if (updaterServices == null)
             {
-                var list = new  List<IGetUpdateService>();
+                var list = new List<IGetUpdateService>();
                 if (_settings.Messenger == Enums.MessengerPlatform.Telegam) list.Add(new Services.TgMessagesService(_settings, _logger));
                 else if (_settings.Messenger == Enums.MessengerPlatform.Vkontakte) list.Add(new Services.LongPollService(_settings, _logger));
-                else if(_settings.Messenger == Enums.MessengerPlatform.VkontakteAndTelegram)
+                else if (_settings.Messenger == Enums.MessengerPlatform.VkontakteAndTelegram)
                 {
                     list.Add(new Services.LongPollService(_settings, _logger));
                     list.Add(new Services.TgMessagesService(_settings, _logger));
                 }
+                _updaters = list;
             }
+            else _updaters = updaterServices;
+
+            if (senders == null)
+            {
+                var list = new List<IMessageSenderService>();
+                if (_settings.Messenger == Enums.MessengerPlatform.Telegam) list.Add(new Services.TgMessageSenderService(_settings, _logger));
+                else if (_settings.Messenger == Enums.MessengerPlatform.Vkontakte) list.Add(new Services.VkMessageSenderService(_settings, _logger));
+                else if (_settings.Messenger == Enums.MessengerPlatform.VkontakteAndTelegram)
+                {
+                    list.Add(new Services.TgMessageSenderService(_settings, _logger));
+                    list.Add(new Services.VkMessageSenderService(_settings, _logger));
+                }
+                SenderServices = list;
+            }
+            else SenderServices = senders;
+
             AliasesCommand = new Dictionary<string, string>();
-            _sender = sender ?? new MessageSenderService(_settings);
             _processor = processor ?? new Processor(_logger, this, kernel);
         }
 

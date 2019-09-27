@@ -1,4 +1,5 @@
-﻿using Fooxboy.NucleusBot.Interfaces;
+﻿using Fooxboy.NucleusBot.Enums;
+using Fooxboy.NucleusBot.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,10 +12,14 @@ namespace Fooxboy.NucleusBot.Services
     {
         public static ITelegramBotClient tgbot;
         private IBotSettings _settings;
+        private ILoggerService _logger;
 
-        public TgMessageSenderService(IBotSettings settings)
+        public MessengerPlatform Platform => MessengerPlatform.Telegam;
+
+        public TgMessageSenderService(IBotSettings settings, ILoggerService logger)
         {
             _settings = settings;
+            _logger = logger;
         }
         public void Image(string to, object image, string text = null, long from = 0)
         {

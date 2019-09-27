@@ -6,6 +6,6 @@ namespace Fooxboy.NucleusBot.Enums
 {
     public enum MessengerPlatform
     {
-        Vkontakte = 1, Telegam = 2, VkontakteAndTelegram = 3
+        Vkontakte = 1, Telegam = 2, VkontakteAndTelegram = 3, Other = 4
     }
 }

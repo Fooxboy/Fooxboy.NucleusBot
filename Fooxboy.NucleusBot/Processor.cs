@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Ninject;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VkNet.Model.Attachments;
 
@@ -56,8 +57,8 @@ namespace Fooxboy.NucleusBot
         private void ExecuteCommand(INucleusCommand command, Message msg)
         {
             var sw = new System.Diagnostics.Stopwatch();
-            IMessageSenderService sender = _kernel.Get<MessageSenderService>();
             sw.Start();
+            IMessageSenderService sender = _bot.SenderServices.Single(s => s.Platform == msg.Platform);
             command.Execute(msg, sender, _bot);
             sw.Stop();
             _logger.Trace($"Команда {command.Command} выполнялась {sw.ElapsedMilliseconds} ms");

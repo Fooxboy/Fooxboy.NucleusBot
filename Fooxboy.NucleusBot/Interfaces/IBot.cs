@@ -7,6 +7,7 @@ namespace Fooxboy.NucleusBot.Interfaces
     public interface IBot
     {
         List<INucleusCommand> Commands { get; set; }
+        List<IMessageSenderService> SenderServices { get; set; }
         Dictionary<string, string> AliasesCommand { get; set; }
         void Start();
         void Stop();
