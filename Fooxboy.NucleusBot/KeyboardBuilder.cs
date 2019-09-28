@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Fooxboy.NucleusBot.Interfaces;
 using Fooxboy.NucleusBot.Models;
+using VkNet.Enums.SafetyEnums;
 
 namespace Fooxboy.NucleusBot
 {
@@ -12,20 +13,20 @@ namespace Fooxboy.NucleusBot
         private bool _resizeKb = false;
         private bool _isSelective = false;
 
-        public KeyboardBuilder AddButton(string text, bool reqContact, bool reqLocation, string btnCol, string btnType,
-            string btnPayload = null, string btnHash = null, string btnAppId = null, string btnOwnerId = null)
+        public KeyboardBuilder AddButton(string text, string command, string arguments = null, bool reqContact= false, bool reqLocation = false, KeyboardButtonColor color = default, KeyboardButtonActionType type = null,
+            string btnPayload = null, string btnHash = null, ulong? btnAppId = null, ulong? btnOwnerId = null)
         {
-            _currentLine.Add(new NucleusKeyboardButton()
+            AddButton(new NucleusKeyboardButton()
             {
-                Caption = text,
+                Caption = text ?? "",
                 RequestContact = reqContact,
                 RequestLocation = reqLocation,
-                Color = btnCol,
-                Type = btnType,
-                Payload = btnPayload,
-                Hash = btnHash,
-                AppID = btnAppId,
-                OwnerID = btnOwnerId
+                Color = color,
+                Type = type ?? KeyboardButtonActionType.Text,
+                Payload = btnPayload ?? "",
+                Hash = btnHash ?? "",
+                AppID = btnAppId ?? 0,
+                OwnerID = btnOwnerId ?? 0
             });
             return this;
         }
