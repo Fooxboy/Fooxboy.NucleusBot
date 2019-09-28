@@ -9,13 +9,21 @@ namespace Fooxboy.NucleusBot
     {
         private readonly List<List<INucleusKeyboardButton>> _fullKeyboard = new List<List<INucleusKeyboardButton>>();
         private List<INucleusKeyboardButton> _currentLine = new List<INucleusKeyboardButton>();
-        private bool _oneTimeKb = false;
-        private bool _resizeKb = false;
-        private bool _isSelective = false;
+        private bool _oneTimeKb;
+        private bool _resizeKb;
+        private bool _isSelective;
+        private IBot _bot;
+
+        public KeyboardBuilder(IBot bot)
+        {
+            this._bot = bot;
+        }
 
         public KeyboardBuilder AddButton(string text, string command, string arguments = null, bool reqContact= false, bool reqLocation = false, KeyboardButtonColor color = default, KeyboardButtonActionType type = null,
             string btnPayload = null, string btnHash = null, ulong? btnAppId = null, ulong? btnOwnerId = null)
         {
+
+            if (command != null) _bot.AliasesCommand.Add(text, command);
             AddButton(new NucleusKeyboardButton()
             {
                 Caption = text ?? "",

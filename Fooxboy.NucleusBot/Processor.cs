@@ -28,7 +28,7 @@ namespace Fooxboy.NucleusBot
             var commandString = string.Empty;
             if(message.Platform == Enums.MessengerPlatform.Telegam)
             {
-                commandString = message.MessageTG.Text.Split(' ')[0];
+                commandString = message.MessageTG.Text;
                 message.Text = message.MessageTG.Text;
                 message.ChatId = message.MessageTG.Chat.Id;
             }
@@ -36,7 +36,7 @@ namespace Fooxboy.NucleusBot
             {
                 message.Text = message.MessageVK.Text;
                 message.ChatId = message.MessageVK.ChatId ?? message.MessageVK.PeerId.Value;
-                if (message.MessageVK.Payload == null) commandString = message.MessageVK.Text.Split(' ')[0];
+                if (message.MessageVK.Payload == null) commandString = message.MessageVK.Text;
                 else
                 {
                     var payload = JsonConvert.DeserializeObject<PayloadNucleusBot>(message.MessageVK.Payload);
