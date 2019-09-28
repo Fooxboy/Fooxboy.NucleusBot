@@ -36,15 +36,38 @@ namespace Fooxboy.NucleusBot.Services
                 AccessToken = _settings.VKToken
             });
 
-            var readyKeyboard = new MessageKeyboard();
-            readyKeyboard.OneTime = keyboard.OneTimeKeyboard;
 
-            var builder = new VkNet.Model.Keyboard.KeyboardBuilder(keyboard.OneTimeKeyboard);
-            foreach(var buttons in keyboard.)
+            var keyboardVkButtons = new List<List<MessageKeyboardButton>>();
+            foreach (var buttons in keyboard.Buttons)
+            {
+                var line = new List<MessageKeyboardButton>();
+                foreach(var button in buttons)
+                {
+                    var vkButton = new MessageKeyboardButton();
+                    vkButton.Action = new MessageKeyboardButtonAction()
+                    {
+                        AppId = button.AppID,
+                        Hash = button.Hash,
+                        Label = button.Caption,
+                        OwnerId = button.OwnerID,
+                        Payload = button.Payload,
+                        Type = button.Type,
+                    };
+
+                    vkButton.Color = button.Color;
+                    line.Add(vkButton);
+                }
+                keyboardVkButtons.Add(line);
+                line.Clear();
+            }
+
+            var vkKeyboard = new MessageKeyboard();
+            vkKeyboard.Buttons = keyboardVkButtons;
+            vkKeyboard.OneTime = keyboard.OneTimeKeyboard;
 
             api.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams()
             {
-                Keyboard = (MessageKeyboard)keyboard,
+                Keyboard = vkKeyboard,
                 Message = text,
                 ChatId = to,
             });

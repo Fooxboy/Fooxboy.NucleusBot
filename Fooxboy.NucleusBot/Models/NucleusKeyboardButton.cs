@@ -1,4 +1,5 @@
 ﻿using Fooxboy.NucleusBot.Interfaces;
+using VkNet.Enums.SafetyEnums;
 
 namespace Fooxboy.NucleusBot.Models
 {
@@ -7,16 +8,12 @@ namespace Fooxboy.NucleusBot.Models
         public string Caption { get; set; }
         public bool RequestContact { get; set; }
         public bool RequestLocation { get; set; }
-        public string Color { get; set; }
-        public string Type { get; set; }
         public string Payload { get; set; }
         public string Hash { get; set; }
-        public string AppID { get; set; }
-        public string OwnerID { get; set; }
+        public ulong AppID { get; set; }
+        public ulong OwnerID { get; set; }
+        public KeyboardButtonColor Color { get; set; }
+        public KeyboardButtonActionType Type { get; set; }
 
-        public NucleusKeyboardButton()
-        {
-            //Саня отдай сотку
-        }
     }
 }

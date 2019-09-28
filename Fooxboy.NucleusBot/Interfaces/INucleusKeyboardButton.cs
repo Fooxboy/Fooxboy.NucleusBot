@@ -2,19 +2,21 @@
 {
     public interface INucleusKeyboardButton
     {
-        //Общие свойства
+        /// <summary>
+        /// Текст на кнопке
+        /// </summary>
         string Caption { get; set; }
         
         //Только Телеграм
         bool RequestContact { get; set; }
         bool RequestLocation { get; set; }
-        
+
         //Только ВК
-        string Color { get; set; }
-        string Type { get; set; }
+        VkNet.Enums.SafetyEnums.KeyboardButtonColor Color { get; set; }
+        VkNet.Enums.SafetyEnums.KeyboardButtonActionType Type { get; set; }
         string Payload { get; set; }
         string Hash { get; set; }
-        string AppID { get; set; }
-        string OwnerID { get; set; }
+        ulong AppID { get; set; }
+        ulong OwnerID { get; set; }
     }
 }
