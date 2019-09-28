@@ -29,11 +29,41 @@ namespace Fooxboy.NucleusBot.Services
         public void Text(string text, long to, INucleusKeyboard keyboard = null, long from = 0)
         {
             tgbot= tgbot?? new TelegramBotClient(_settings.TGToken);
+            var replyKeyboardMarkup = new ReplyKeyboardMarkup();
+            if (keyboard != null)
+            {
+                var keyboardArray = new List<List<KeyboardButton>>();
+                foreach (var buttons in keyboard.Buttons)
+                {
+                    var line = new List<KeyboardButton>();
+                    foreach (var button in buttons)
+                    {
+                        line.Add(new KeyboardButton()
+                        {
+                            RequestContact = button.RequestContact,
+                            RequestLocation = button.RequestLocation,
+                            Text = button.Caption
+                        });
+                        keyboardArray.Add(line);
+                        line.Clear();
+                    }
+                }
+                replyKeyboardMarkup.Keyboard = keyboardArray;
+                replyKeyboardMarkup.ResizeKeyboard = keyboard.ResizeKeyboard;
+                replyKeyboardMarkup.OneTimeKeyboard = keyboard.OneTimeKeyboard;
+
+            }
+            
             var msgSendTask = tgbot.SendTextMessageAsync(
                 chatId: to,
                 text: text,
-                replyMarkup: (ReplyKeyboardMarkup)keyboard
+                replyMarkup: replyKeyboardMarkup
             );
+        }
+
+        public void Keyboard(INucleusKeyboard keyboard)
+        {
+            
         }
     }
 }
