@@ -28,20 +28,13 @@ namespace Fooxboy.NucleusBot.Services
             throw new NotImplementedException();
         }
 
-        public void Text(string text, long to, INucleusKeyboard keyboard = null, long from = 0)
+        private MessageKeyboard ConvertToVkKeyboard(INucleusKeyboard keyboard)
         {
-            api = api ?? new VkApi();
-            api.Authorize(new ApiAuthParams()
-            {
-                AccessToken = _settings.VKToken
-            });
-
-
             var keyboardVkButtons = new List<List<MessageKeyboardButton>>();
             foreach (var buttons in keyboard.Buttons)
             {
                 var line = new List<MessageKeyboardButton>();
-                foreach(var button in buttons)
+                foreach (var button in buttons)
                 {
                     var vkButton = new MessageKeyboardButton();
                     vkButton.Action = new MessageKeyboardButtonAction()
@@ -65,6 +58,17 @@ namespace Fooxboy.NucleusBot.Services
             vkKeyboard.Buttons = keyboardVkButtons;
             vkKeyboard.OneTime = keyboard.OneTimeKeyboard;
 
+            return vkKeyboard;
+        }
+
+        public void Text(string text, long to, INucleusKeyboard keyboard = null, long from = 0)
+        {
+            api = api ?? new VkApi();
+            api.Authorize(new ApiAuthParams()
+            {
+                AccessToken = _settings.VKToken
+            });
+            var vkKeyboard = keyboard != null ? ConvertToVkKeyboard(keyboard) : null;
             api.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams()
             {
                 Keyboard = vkKeyboard,
