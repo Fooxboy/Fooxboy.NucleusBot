@@ -16,7 +16,7 @@ namespace Fooxboy.NucleusBot.SampleBot.Commands
             builder.AddButton("Зеленая кнопка", "sampleGreenButtonCommand", color:KeyboardButtonColor.Positive);
             builder.AddButton("Красная кнопка", "sampleRedButtonCommand", color:KeyboardButtonColor.Negative);
             var kb = builder.Build();
-            sender.Text("Вот тебе клавиатура комрад", msg.ChatId, kb);
+            sender.Text("Вот тебе клавиатура, комрад", msg.ChatId, kb);
         }
 
         public void Init(IBot bot, ILoggerService logger)
