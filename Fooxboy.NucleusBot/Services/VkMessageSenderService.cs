@@ -45,7 +45,7 @@ namespace Fooxboy.NucleusBot.Services
                         Hash = button.Hash,
                         Label = button.Caption,
                         OwnerId = button.OwnerID,
-                        Payload = button.Payload,
+                        Payload = new PayloadBuilder().BuildToStringFromModel(button.Payload),
                         Type = button.Type,
                     };
 

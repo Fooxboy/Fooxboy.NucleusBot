@@ -19,8 +19,8 @@ namespace Fooxboy.NucleusBot
             this._bot = bot;
         }
 
-        public KeyboardBuilder AddButton(string text, string command, string arguments = null, bool reqContact= false, bool reqLocation = false, KeyboardButtonColor color = default, KeyboardButtonActionType type = null,
-            string btnPayload = null, string btnHash = null, ulong? btnAppId = null, ulong? btnOwnerId = null)
+        public KeyboardBuilder AddButton(string text, string command, List<string> arguments = null, bool reqContact= false, bool reqLocation = false, KeyboardButtonColor color = default, KeyboardButtonActionType type = null,
+            string btnHash = null, ulong? btnAppId = null, ulong? btnOwnerId = null)
         {
 
             if (command != null) _bot.AliasesCommand.Add(text, command);
@@ -31,7 +31,7 @@ namespace Fooxboy.NucleusBot
                 RequestLocation = reqLocation,
                 Color = color,
                 Type = type ?? KeyboardButtonActionType.Text,
-                Payload = btnPayload ?? "",
+                Payload = command != null ? new PayloadBuilder(command,arguments).BuildToModel(): null,
                 Hash = btnHash ?? "",
                 AppID = btnAppId ?? 0,
                 OwnerID = btnOwnerId ?? 0

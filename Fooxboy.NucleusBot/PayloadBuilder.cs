@@ -10,7 +10,7 @@ namespace Fooxboy.NucleusBot
     {
         PayloadNucleusBot _payload;
 
-        PayloadBuilder(string command = null, List<string> arguments = null)
+        public PayloadBuilder(string command = null, List<string> arguments = null)
         {
             if (command != null) _payload = new PayloadNucleusBot() { Command = command, Arguments = arguments };
             else _payload = new PayloadNucleusBot();
@@ -18,10 +18,9 @@ namespace Fooxboy.NucleusBot
 
         public string BuildToString() => JsonConvert.SerializeObject(_payload);
         public PayloadNucleusBot BuildToModel() => _payload;
-
         public void SetCommand(string command) => _payload.Command = command;
         public void SetArgumens(List<string> arguments) => _payload.Arguments = arguments;
         public PayloadNucleusBot BuildToModelFromString(string payload) => JsonConvert.DeserializeObject<PayloadNucleusBot>(payload);
-        
+        public string BuildToStringFromModel(PayloadNucleusBot payload) => JsonConvert.SerializeObject(payload);
     }
 }

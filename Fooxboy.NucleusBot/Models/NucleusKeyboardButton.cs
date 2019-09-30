@@ -8,7 +8,7 @@ namespace Fooxboy.NucleusBot.Models
         public string Caption { get; set; }
         public bool RequestContact { get; set; }
         public bool RequestLocation { get; set; }
-        public string Payload { get; set; }
+        public PayloadNucleusBot Payload { get; set; }
         public string Hash { get; set; }
         public ulong AppID { get; set; }
         public ulong OwnerID { get; set; }
