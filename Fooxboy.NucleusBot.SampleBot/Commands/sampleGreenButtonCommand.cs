@@ -3,7 +3,7 @@ using Fooxboy.NucleusBot.Models;
 
 namespace Fooxboy.NucleusBot.SampleBot.Commands
 {
-    public class sampleGreenButtonCommand : INucleusCommand
+    public class SampleGreenButtonCommand : INucleusCommand
     {
         public string Command => "sampleGreenButtonCommand";
         public string[] Aliases => new[] {"Зеленая кнопка"};
