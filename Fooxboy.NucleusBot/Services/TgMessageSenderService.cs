@@ -3,6 +3,7 @@ using Fooxboy.NucleusBot.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -51,14 +52,27 @@ namespace Fooxboy.NucleusBot.Services
                 replyKeyboardMarkup.Keyboard = keyboardArray;
                 replyKeyboardMarkup.ResizeKeyboard = keyboard.ResizeKeyboard;
                 replyKeyboardMarkup.OneTimeKeyboard = keyboard.OneTimeKeyboard;
-
+                Task.Run(() =>
+                {
+                    tgbot.SendTextMessageAsync(
+                        chatId: to,
+                        text: text,
+                        replyMarkup: replyKeyboardMarkup
+                    );
+                });
             }
+            else
+            {
+                Task.Run(() =>
+                {
+                    tgbot.SendTextMessageAsync(
+                        chatId: to,
+                        text: text
+                    );
+                });
+            }
+
             
-            var msgSendTask = tgbot.SendTextMessageAsync(
-                chatId: to,
-                text: text,
-                replyMarkup: replyKeyboardMarkup
-            );
         }
 
         public void Keyboard(INucleusKeyboard keyboard)

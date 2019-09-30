@@ -42,9 +42,10 @@ namespace Fooxboy.NucleusBot.Services
             Bot = new TelegramBotClient(_settings.TGToken);
             Bot.OnMessage += MessageProcessor;
             Bot.OnCallbackQuery += CallbackQueryProcessor;
+            Bot.StartReceiving();
         }
 
-        void MessageProcessor(object sender, MessageEventArgs e)
+        public void MessageProcessor(object sender, MessageEventArgs e)
         {
             var model = new Message();
             model.Platform = Enums.MessengerPlatform.Telegam;
