@@ -14,7 +14,7 @@
         //Только ВК
         VkNet.Enums.SafetyEnums.KeyboardButtonColor Color { get; set; }
         VkNet.Enums.SafetyEnums.KeyboardButtonActionType Type { get; set; }
-        string Payload { get; set; }
+        INucleusCommand Payload { get; set; }
         string Hash { get; set; }
         ulong AppID { get; set; }
         ulong OwnerID { get; set; }

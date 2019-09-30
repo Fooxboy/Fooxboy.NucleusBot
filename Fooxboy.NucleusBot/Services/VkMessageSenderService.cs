@@ -1,5 +1,7 @@
 ﻿using Fooxboy.NucleusBot.Enums;
 using Fooxboy.NucleusBot.Interfaces;
+using Fooxboy.NucleusBot.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +11,7 @@ using VkNet.Model.Keyboard;
 
 namespace Fooxboy.NucleusBot.Services
 {
-    public class VkMessageSenderService: IMessageSenderService
+    public class VkMessageSenderService : IMessageSenderService
     {
         private IBotSettings _settings;
         private ILoggerService _logger;
@@ -76,5 +78,6 @@ namespace Fooxboy.NucleusBot.Services
                 ChatId = to,
             });
         }
+
     }
 }
