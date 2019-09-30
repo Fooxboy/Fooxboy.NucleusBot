@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Fooxboy.NucleusBot.Interfaces;
 using Fooxboy.NucleusBot.Models;
 using VkNet.Enums.SafetyEnums;
@@ -23,16 +24,25 @@ namespace Fooxboy.NucleusBot
             string btnHash = null, ulong? btnAppId = null, ulong? btnOwnerId = null)
         {
 
-            if (command != null) _bot.AliasesCommand.Add(text, command);
+            if (command != null)
+            {
+                try
+                {
+                    _bot.AliasesCommand.Add(text, command);
+                }catch(Exception)
+                {
+                    Console.WriteLine($"Алиас {text} уже существует.");
+                }
+            }
             AddButton(new NucleusKeyboardButton()
             {
-                Caption = text ?? "",
+                Caption = text ?? "my button",
                 RequestContact = reqContact,
                 RequestLocation = reqLocation,
                 Color = color,
                 Type = type ?? KeyboardButtonActionType.Text,
                 Payload = command != null ? new PayloadBuilder(command,arguments).BuildToModel(): null,
-                Hash = btnHash ?? "",
+                Hash = btnHash ?? null,
                 AppID = btnAppId ?? 0,
                 OwnerID = btnOwnerId ?? 0
             });

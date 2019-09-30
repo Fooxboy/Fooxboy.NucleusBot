@@ -33,10 +33,11 @@ namespace Fooxboy.NucleusBot.Services
         private MessageKeyboard ConvertToVkKeyboard(INucleusKeyboard keyboard)
         {
             var keyboardVkButtons = new List<List<MessageKeyboardButton>>();
-            foreach (var buttons in keyboard.Buttons)
+            
+            foreach (var buttonsLine in keyboard.Buttons)
             {
                 var line = new List<MessageKeyboardButton>();
-                foreach (var button in buttons)
+                foreach (var button in buttonsLine)
                 {
                     var vkButton = new MessageKeyboardButton();
                     vkButton.Action = new MessageKeyboardButtonAction()
@@ -53,12 +54,14 @@ namespace Fooxboy.NucleusBot.Services
                     line.Add(vkButton);
                 }
                 keyboardVkButtons.Add(line);
-                line.Clear();
             }
 
             var vkKeyboard = new MessageKeyboard();
             vkKeyboard.Buttons = keyboardVkButtons;
             vkKeyboard.OneTime = keyboard.OneTimeKeyboard;
+
+            var a = JsonConvert.SerializeObject(vkKeyboard);
+            _logger.War(a);
 
             return vkKeyboard;
         }
@@ -75,7 +78,7 @@ namespace Fooxboy.NucleusBot.Services
             {
                 Keyboard = vkKeyboard,
                 Message = text,
-                ChatId = to,
+                PeerId = to,
                 RandomId = new Random().Next(0, 999999)
             });
         }

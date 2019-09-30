@@ -13,8 +13,8 @@ namespace Fooxboy.NucleusBot.SampleBot.Commands
             var builder = new KeyboardBuilder(bot);
             builder.AddButton("Кнопка", "sampleButtonCommand", color:KeyboardButtonColor.Default);
             builder.AddLine();
-            builder.AddButton("Зеленая кнопка", "sampleGreenButtonCommand", color:KeyboardButtonColor.Positive);
-            builder.AddButton("Красная кнопка", "sampleRedButtonCommand", color:KeyboardButtonColor.Negative);
+            builder.AddButton("Зеленая кнопка", "loh", color:KeyboardButtonColor.Default);
+            builder.AddButton("Красная кнопка", "boh", color:KeyboardButtonColor.Default);
             var kb = builder.Build();
             sender.Text("Вот тебе клавиатура, комрад", msg.ChatId, kb);
         }
