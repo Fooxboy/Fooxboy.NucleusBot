@@ -52,6 +52,7 @@ namespace Fooxboy.NucleusBot
             Console.WriteLine("Инициалиация NucleusBot...");
             IKernel kernel = new StandardKernel(new NinjectConfigModule());
             _logger = logger?? new LoggerService();
+            _botServices = new List<INucleusService>();
             _settings = settings;
             if (updaterServices == null)
             {

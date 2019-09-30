@@ -76,6 +76,7 @@ namespace Fooxboy.NucleusBot.Services
                 Keyboard = vkKeyboard,
                 Message = text,
                 ChatId = to,
+                RandomId = new Random().Next(0, 999999)
             });
         }
 

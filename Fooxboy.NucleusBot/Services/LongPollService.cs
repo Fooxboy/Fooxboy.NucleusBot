@@ -86,6 +86,7 @@ namespace Fooxboy.NucleusBot.Services
             _isStart = true;
             ResetSettingsLongPoll();
             SetSettingLongPoll();
+            SeriesLongPoll();
         }
 
 

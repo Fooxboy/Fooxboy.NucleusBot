@@ -45,6 +45,7 @@ namespace Fooxboy.NucleusBot
             }
             var command = SearchCommand(commandString);
             if (command is null) return;
+            ExecuteCommand(command, message);
         }
 
         private INucleusCommand SearchCommand(string commandString)
