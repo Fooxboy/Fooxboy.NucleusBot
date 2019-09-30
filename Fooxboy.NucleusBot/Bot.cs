@@ -53,7 +53,6 @@ namespace Fooxboy.NucleusBot
             IKernel kernel = new StandardKernel(new NinjectConfigModule());
             _logger = logger?? new LoggerService();
             _settings = settings;
-
             if (updaterServices == null)
             {
                 var list = new List<IGetUpdateService>();
@@ -67,10 +66,8 @@ namespace Fooxboy.NucleusBot
                 _updaters = list;
             }
             else _updaters = updaterServices;
-
             if (senders == null)
             {
-                
                 var list = new List<IMessageSenderService>();
                 if (_settings.Messenger == Enums.MessengerPlatform.Telegam) list.Add(new Services.TgMessageSenderService(_settings, _logger));
                 else if (_settings.Messenger == Enums.MessengerPlatform.Vkontakte) list.Add(new Services.VkMessageSenderService(_settings, _logger));
@@ -111,7 +108,6 @@ namespace Fooxboy.NucleusBot
                 {
                     _logger.Error($"Произошла ошибка при инициализации команды {command.Command}: \n {e}");
                 }
-                
             }
 
             foreach (var updater in _updaters)
