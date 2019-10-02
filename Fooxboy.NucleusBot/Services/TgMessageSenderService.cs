@@ -30,28 +30,10 @@ namespace Fooxboy.NucleusBot.Services
         public void Text(string text, long to, INucleusKeyboard keyboard = null, long from = 0)
         {
             tgbot= tgbot?? new TelegramBotClient(_settings.TGToken);
-            var replyKeyboardMarkup = new ReplyKeyboardMarkup();
+            
             if (keyboard != null)
             {
-                var keyboardArray = new List<List<KeyboardButton>>();
-                foreach (var buttons in keyboard.Buttons)
-                {
-                    var line = new List<KeyboardButton>();
-                    foreach (var button in buttons)
-                    {
-                        line.Add(new KeyboardButton()
-                        {
-                            RequestContact = button.RequestContact,
-                            RequestLocation = button.RequestLocation,
-                            Text = button.Caption
-                        });
-                        keyboardArray.Add(line);
-                        line.Clear();
-                    }
-                }
-                replyKeyboardMarkup.Keyboard = keyboardArray;
-                replyKeyboardMarkup.ResizeKeyboard = keyboard.ResizeKeyboard;
-                replyKeyboardMarkup.OneTimeKeyboard = keyboard.OneTimeKeyboard;
+                var replyKeyboardMarkup = ConvertToTgKeyboard(keyboard);
                 Task.Run(() =>
                 {
                     tgbot.SendTextMessageAsync(
@@ -75,9 +57,27 @@ namespace Fooxboy.NucleusBot.Services
             
         }
 
-        public void Keyboard(INucleusKeyboard keyboard)
+        private ReplyKeyboardMarkup ConvertToTgKeyboard(INucleusKeyboard keyboard)
         {
-            
+            var keyboardArray = new List<List<KeyboardButton>>();
+            foreach (var buttons in keyboard.Buttons)
+            {
+                var line = new List<KeyboardButton>();
+                foreach (var button in buttons)
+                {
+                    var tgButton = new KeyboardButton();
+                    tgButton.RequestContact = button.RequestContact;
+                    tgButton.RequestLocation = button.RequestLocation;
+                    tgButton.Text = button.Caption;
+                    line.Add(tgButton);
+                }
+                keyboardArray.Add(line);
+            }
+            var replyKeyboardMarkup = new ReplyKeyboardMarkup();
+            replyKeyboardMarkup.Keyboard = keyboardArray;
+            replyKeyboardMarkup.ResizeKeyboard = keyboard.ResizeKeyboard;
+            replyKeyboardMarkup.OneTimeKeyboard = keyboard.OneTimeKeyboard;
+            return replyKeyboardMarkup;
         }
     }
 }

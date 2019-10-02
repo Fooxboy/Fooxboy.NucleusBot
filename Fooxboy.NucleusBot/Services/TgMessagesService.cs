@@ -50,6 +50,8 @@ namespace Fooxboy.NucleusBot.Services
             var model = new Message();
             model.Platform = Enums.MessengerPlatform.Telegam;
             model.MessageTG = e.Message;
+            model.ChatId = e.Message.Chat.Id;
+            model.Text = e.Message.Text;
             NewMessageEvent.Invoke(model);
         }
 
