@@ -42,10 +42,10 @@ namespace Fooxboy.NucleusBot.Services
                     var vkButton = new MessageKeyboardButton();
                     vkButton.Action = new MessageKeyboardButtonAction()
                     {
-                        AppId = button.AppID,
+                        AppId = button.AppID ==0? null: button?.AppID,
                         Hash = button.Hash,
                         Label = button.Caption,
-                        OwnerId = button.OwnerID,
+                        OwnerId = button.OwnerID == 0? null: button?.OwnerID,
                         Payload = new PayloadBuilder().BuildToStringFromModel(button.Payload),
                         Type = button.Type,
                     };
@@ -59,10 +59,6 @@ namespace Fooxboy.NucleusBot.Services
             var vkKeyboard = new MessageKeyboard();
             vkKeyboard.Buttons = keyboardVkButtons;
             vkKeyboard.OneTime = keyboard.OneTimeKeyboard;
-
-            var a = JsonConvert.SerializeObject(vkKeyboard);
-            _logger.War(a);
-
             return vkKeyboard;
         }
 
