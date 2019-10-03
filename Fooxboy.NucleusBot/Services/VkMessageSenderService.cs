@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using VkNet;
 using VkNet.Model;
 using VkNet.Model.Keyboard;
@@ -70,14 +71,16 @@ namespace Fooxboy.NucleusBot.Services
                 AccessToken = _settings.VKToken
             });
             var vkKeyboard = keyboard != null ? ConvertToVkKeyboard(keyboard) : null;
-            api.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams()
+            Task.Run(() =>
             {
-                Keyboard = vkKeyboard,
-                Message = text,
-                PeerId = to,
-                RandomId = new Random().Next(0, 999999)
+                api.Messages.Send(new VkNet.Model.RequestParams.MessagesSendParams()
+                {
+                    Keyboard = vkKeyboard,
+                    Message = text,
+                    PeerId = to,
+                    RandomId = new Random().Next(0, 999999)
+                });
             });
         }
-
     }
 }

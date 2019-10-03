@@ -38,7 +38,8 @@ namespace Fooxboy.NucleusBot.Services
                 _logger.Error("Telegram-бот уже работает");
                 throw new ArgumentNullException("Telegram-бот уже работает");
             }
-            
+
+            _isStarted = true;
             Bot = new TelegramBotClient(_settings.TGToken);
             Bot.OnMessage += MessageProcessor;
             Bot.OnCallbackQuery += CallbackQueryProcessor;
@@ -47,6 +48,7 @@ namespace Fooxboy.NucleusBot.Services
 
         public void MessageProcessor(object sender, MessageEventArgs e)
         {
+            if (!_isStarted) return;
             var model = new Message();
             model.Platform = Enums.MessengerPlatform.Telegam;
             model.MessageTG = e.Message;
@@ -62,7 +64,9 @@ namespace Fooxboy.NucleusBot.Services
 
         public void Stop()
         {
-            throw new System.NotImplementedException();
+            _logger.War("Остановка TelegramBot...");
+            _isStarted = false;
+            //throw new System.NotImplementedException();
         }
     }
 }

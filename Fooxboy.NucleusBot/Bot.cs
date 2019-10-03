@@ -128,7 +128,10 @@ namespace Fooxboy.NucleusBot
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            _logger.War("Остановка сервисов получения обновлений...");
+            foreach(var serivceUpdate in _updaters) serivceUpdate.Stop();
+            _logger.War("Остановка сервисов получения обновлений завершена.");
+            //throw new NotImplementedException();
         }
     }
 }

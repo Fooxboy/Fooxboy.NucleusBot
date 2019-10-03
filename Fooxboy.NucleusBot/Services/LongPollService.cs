@@ -227,7 +227,9 @@ namespace Fooxboy.NucleusBot.Services
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            _logger.War("Остановка LongPoll ВКонтакте...");
+            _isStart = false;
+            //throw new NotImplementedException();
         }
     }
 }
