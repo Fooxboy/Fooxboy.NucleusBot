@@ -6,7 +6,7 @@ namespace Fooxboy.NucleusBot.SampleBot.Commands
     public class SampleGreenButtonCommand : INucleusCommand
     {
         public string Command => "sampleGreenButtonCommand";
-        public string[] Aliases => new[] {"Зеленая кнопка"};
+        public string[] Aliases => new[] {"Зеленая вроде кнопка"};
         public void Execute(Message msg, IMessageSenderService sender, IBot bot)
         {
             sender.Text("Ты нажал на зеленую кнопку!", msg.ChatId);
