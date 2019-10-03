@@ -163,7 +163,8 @@ namespace Fooxboy.NucleusBot.Services
                     }
 
                 End:
-                    _logger.Trace("\n");
+                    var i = 1;
+                    //_logger.Trace("\n");
                 }
                 catch (Exception e) 
                 {

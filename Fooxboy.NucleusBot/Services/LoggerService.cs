@@ -17,7 +17,7 @@ namespace Fooxboy.NucleusBot.Services
         }
         private void Write(string type, object text)
         {
-            Console.WriteLine($"({DateTime.Now.Hour}:{DateTime.Now.Minute}:{DateTime.Now.Second}) [{type}]: {text}");
+            Console.WriteLine($"({DateTime.Now.ToString("HH:mm:ss")}) [{type}]: {text}");
         }
 
         public void Info(object text)
