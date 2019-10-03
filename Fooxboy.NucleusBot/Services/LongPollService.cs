@@ -89,7 +89,6 @@ namespace Fooxboy.NucleusBot.Services
             SeriesLongPoll();
         }
 
-
         private void SeriesLongPoll()
         {
             while(_isStart)
@@ -97,14 +96,13 @@ namespace Fooxboy.NucleusBot.Services
                 try
                 {
                     var json = Request();
-                    if (json == null) return;
+                    if (json == null) goto End;
                     var response = JsonConvert.DeserializeObject<RootLongPollModel>(json);
                     if (response.Ts == 0)
                     {
                         _logger.Error("Возникла ошибка в longPoll. Получаю новые server и ts...");
                         ResetSettingsLongPoll();
                         SetSettingLongPoll();
-                        return;
                     }
 
                     _ts = response.Ts;
@@ -162,8 +160,10 @@ namespace Fooxboy.NucleusBot.Services
                         {
                             _logger.Error($"Тип обновления {type} пока что не поддерживается. Отключите его получение в настройках сообщества, если это сообщение Вам мешает.");
                         }
-                        
                     }
+
+                End:
+                    _logger.Trace("\n");
                 }
                 catch (Exception e) 
                 {
