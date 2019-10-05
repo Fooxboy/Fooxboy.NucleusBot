@@ -1,6 +1,7 @@
 ﻿using Fooxboy.NucleusBot.Interfaces;
 using Fooxboy.NucleusBot.Models;
 using Fooxboy.NucleusBot.SampleBot.Commands;
+using Fooxboy.NucleusBot.SampleBot.Services;
 using System;
 
 namespace Fooxboy.NucleusBot.SampleBot
@@ -14,6 +15,7 @@ namespace Fooxboy.NucleusBot.SampleBot
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            //Создание параметров для бота.
             var settings = new BotSettings()
             {
                 GroupId = groupVkId,
@@ -21,14 +23,23 @@ namespace Fooxboy.NucleusBot.SampleBot
                 TGToken = tgTokenBot,
                 VKToken = vkTokenGroup
             };
+            //Создание экзмпляра класса бота.
             IBot bot = new NucleusBot.Bot(settings, new Commands.UnknownCommand());
+
+            //Установка команд.
             bot.SetCommands(new HelloCommand(),
                 new KbCommand(),
                 new SampleButtonCommand(),
                 new SampleGreenButtonCommand(),
                 new SampleRedButtonCommand());
+
+            //Установка сервисов.
+            bot.SetServices(new CounterService());
+            
+            //Запуск бота
             bot.Start();
 
+            //Чтобы консоль тупо не закрылась))
             Console.ReadLine();
         }
     }
