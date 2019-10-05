@@ -23,6 +23,7 @@ namespace Fooxboy.NucleusBot.SampleBot
                 TGToken = tgTokenBot,
                 VKToken = vkTokenGroup
             };
+
             //Создание экзмпляра класса бота.
             IBot bot = new NucleusBot.Bot(settings, new Commands.UnknownCommand());
 
