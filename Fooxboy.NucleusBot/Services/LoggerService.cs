@@ -13,7 +13,6 @@ namespace Fooxboy.NucleusBot.Services
             Console.ForegroundColor = ConsoleColor.Red;
             Write("ERROR", text);
             Console.ResetColor();
-            //throw new NotImplementedException();
         }
         private void Write(string type, object text)
         {
@@ -25,7 +24,6 @@ namespace Fooxboy.NucleusBot.Services
             Console.ForegroundColor = ConsoleColor.Cyan;
             Write("INFO", text);
             Console.ResetColor();
-            //throw new NotImplementedException();
         }
 
         public void Trace(object text)
@@ -38,7 +36,6 @@ namespace Fooxboy.NucleusBot.Services
             Console.ForegroundColor = ConsoleColor.Yellow;
             Write("WARNING",text);
             Console.ResetColor();
-            //throw new NotImplementedException();
         }
     }
 }

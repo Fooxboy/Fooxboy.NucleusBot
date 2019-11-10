@@ -15,17 +15,15 @@ namespace Fooxboy.NucleusBot.SampleBot.Services
 
         public void Start(IBot bot, IBotSettings settings, List<IMessageSenderService> senders, ILoggerService logger)
         {
-            //throw new NotImplementedException();
             IsRunning = true;
-            while(IsRunning)
+            var counter = 0;
+            while (IsRunning)
             {
-                var counter = 0;
                 Thread.Sleep(1000);
                 counter++;
-                logger.Trace(counter);
+                logger.Trace($"[Counter Service]: {counter}");
             }
         }
-
 
         public void Stop()
         {

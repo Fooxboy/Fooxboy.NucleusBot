@@ -48,7 +48,7 @@ namespace Fooxboy.NucleusBot
         /// <param name="logger">Экзепляр класса логгера, если пусто используется встроенный.</param>
         public Bot(IBotSettings settings, INucleusCommand unknownCommand = null, List<IGetUpdateService> updaterServices = null, List<IMessageSenderService> senders = null, IProcessor processor = null, ILoggerService logger = null)
         {
-            Console.WriteLine("Fooxboy.NucleusBot. 2019. Версия: 0.1 alpha");
+            Console.WriteLine("Fooxboy.NucleusBot Core. 2019. Версия: 0.1 alpha");
             Console.WriteLine("Инициалиация NucleusBot...");
             IKernel kernel = new StandardKernel(new NinjectConfigModule());
             _logger = logger?? new LoggerService();
