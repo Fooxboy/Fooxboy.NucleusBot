@@ -82,7 +82,7 @@ namespace Fooxboy.NucleusBot
             else SenderServices = senders;
 
             AliasesCommand = new Dictionary<string, string>();
-            UnknownCommand = UnknownCommand ?? new UnknownCommand();
+            UnknownCommand = unknownCommand ?? new UnknownCommand();
             _processor = processor ?? new Processor(_logger, this, kernel);
         }
 
