@@ -6,6 +6,7 @@ namespace Fooxboy.NucleusBot.Interfaces
 {
     public interface IBot
     {
+        string ScreenNameBot { get; set; }
         List<INucleusCommand> Commands { get; set; }
         List<IMessageSenderService> SenderServices { get; set; }
         INucleusCommand UnknownCommand { get; set; }

@@ -43,6 +43,7 @@ namespace Fooxboy.NucleusBot
                     commandString = payload.Command;
                 }
             }
+            if (commandString.Split(' ')[0] == $"@{_bot.ScreenNameBot}") commandString = commandString.Split(' ').Length > 1?  commandString.Split(' ')[1]: "1";
             var command = SearchCommand(commandString);
             if (command is null) return;
             ExecuteCommand(command, message);

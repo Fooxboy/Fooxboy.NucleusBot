@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VkNet;
+using VkNet.Enums.Filters;
 using VkNet.Exception;
 using VkNet.Model;
 
@@ -36,6 +38,7 @@ namespace Fooxboy.NucleusBot
         /// Команды
         /// </summary>
         public List<INucleusCommand> Commands { get; set; }
+        public string ScreenNameBot { get; set; }
 
         /// <summary>
         /// Bot
@@ -86,7 +89,7 @@ namespace Fooxboy.NucleusBot
             _processor = processor ?? new Processor(_logger, this, kernel);
         }
 
-
+        public ILoggerService GetLogger() => _logger;
         public void SetCommands(params INucleusCommand[] commands) => this.Commands = commands.ToList();
 
         public void SetServices(params INucleusService[] services)=> this._botServices = services.ToList();
@@ -110,6 +113,19 @@ namespace Fooxboy.NucleusBot
                     _logger.Error($"Произошла ошибка при инициализации команды {command.Command}: \n {e}");
                 }
             }
+
+            if(_settings.Messenger == Enums.MessengerPlatform.VkontakteAndTelegram || _settings.Messenger == Enums.MessengerPlatform.Vkontakte)
+            {
+                var vkapi = new VkApi();
+                vkapi.Authorize(new ApiAuthParams()
+                {
+                    AccessToken = _settings.VKToken
+                });
+
+                var info =  vkapi.Groups.GetById(new List<string>() { _settings.GroupId.ToString() }, groupId: _settings.GroupId.ToString(), GroupsFields.Description);
+                this.ScreenNameBot = info[0].ScreenName;
+            }
+            
 
             foreach (var updater in _updaters)
             {

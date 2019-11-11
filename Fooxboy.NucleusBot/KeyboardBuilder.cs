@@ -51,6 +51,14 @@ namespace Fooxboy.NucleusBot
         
         public void AddButton(INucleusKeyboardButton button)
         {
+            try
+            {
+                _bot.AliasesCommand.Add(button.Caption, button.Payload.Command);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Алиас {button.Caption} уже существует.");
+            }
             _currentLine.Add(button);
         }
 
