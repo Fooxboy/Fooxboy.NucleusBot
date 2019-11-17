@@ -28,10 +28,11 @@ namespace Fooxboy.NucleusBot
             {
                 try
                 {
-                    _bot.AliasesCommand.Add(text, command);
+                    var pb = new PayloadBuilder(command, arguments);
+                    _bot.AliasesCommand.Add(text, pb.BuildToModel());
                 }catch(Exception)
                 {
-                    Console.WriteLine($"Алиас {text} уже существует.");
+                    //Console.WriteLine($"Алиас {text} уже существует.");
                 }
             }
             AddButton(new NucleusKeyboardButton()
@@ -53,11 +54,11 @@ namespace Fooxboy.NucleusBot
         {
             try
             {
-                _bot.AliasesCommand.Add(button.Caption, button.Payload.Command);
+                _bot.AliasesCommand.Add(button.Caption, button.Payload);
             }
             catch (Exception)
             {
-                Console.WriteLine($"Алиас {button.Caption} уже существует.");
+                //Console.WriteLine($"Алиас {button.Caption} уже существует.");
             }
             _currentLine.Add(button);
         }
@@ -90,6 +91,14 @@ namespace Fooxboy.NucleusBot
         public NucleusKeyboard Build()
         {
             _fullKeyboard.Add(_currentLine);
+            List<INucleusKeyboardButton> lineRemove = null;
+
+            foreach(var line in _fullKeyboard)
+            {
+                if (line.Count == 0) lineRemove = line;
+            }
+
+            if(lineRemove != null) _fullKeyboard.Remove(lineRemove);
             return new NucleusKeyboard()
             {
                 Buttons = _fullKeyboard,

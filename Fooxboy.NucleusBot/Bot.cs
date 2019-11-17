@@ -33,7 +33,7 @@ namespace Fooxboy.NucleusBot
         /// <summary>
         /// Алиасы комманд.
         /// </summary>
-        public Dictionary<string, string> AliasesCommand { get; set; }
+        public Dictionary<string, PayloadNucleusBot> AliasesCommand { get; set; }
         /// <summary>
         /// Команды
         /// </summary>
@@ -84,7 +84,7 @@ namespace Fooxboy.NucleusBot
             }
             else SenderServices = senders;
 
-            AliasesCommand = new Dictionary<string, string>();
+            AliasesCommand = new Dictionary<string, PayloadNucleusBot>();
             UnknownCommand = unknownCommand ?? new UnknownCommand();
             _processor = processor ?? new Processor(_logger, this, kernel);
         }
@@ -104,7 +104,7 @@ namespace Fooxboy.NucleusBot
             foreach (var command in this.Commands)
             {
                 _logger.Trace($"Инициализация команды {command.Command}...");
-                if(command.Aliases != null) foreach (var alias in command.Aliases) AliasesCommand.Add(alias, command.Command);
+                if(command.Aliases != null) foreach (var alias in command.Aliases) AliasesCommand.Add(alias, new PayloadBuilder(command.Command).BuildToModel());
                 try
                 {
                     command.Init(this, _logger);

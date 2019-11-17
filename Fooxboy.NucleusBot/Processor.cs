@@ -31,15 +31,21 @@ namespace Fooxboy.NucleusBot
                 commandString = message.MessageTG.Text;
                 message.Text = message.MessageTG.Text;
                 message.ChatId = message.MessageTG.Chat.Id;
+                foreach (var alias in _bot.AliasesCommand)
+                {
+                    if (alias.Key.ToLower() == commandString.ToLower()) message.Payload = alias.Value;
+                }
+                
             }
             else if(message.Platform == Enums.MessengerPlatform.Vkontakte)
             {
                 message.Text = message.MessageVK.Text;
                 message.ChatId = message.MessageVK.ChatId ?? message.MessageVK.PeerId.Value;
-                if (message.MessageVK.Payload == null) commandString = message.MessageVK.Text;
+                if (message.MessageVK.Payload == null) commandString = message.MessageVK.Text.Split(' ')[0];
                 else
                 {
                     var payload = JsonConvert.DeserializeObject<PayloadNucleusBot>(message.MessageVK.Payload);
+                    message.Payload = payload;
                     commandString = payload.Command;
                 }
             }
@@ -58,7 +64,11 @@ namespace Fooxboy.NucleusBot
                 var commandStr = string.Empty;
                 foreach (var alias in _bot.AliasesCommand)
                 {
-                    if (alias.Key.ToLower() == commandString.ToLower()) commandStr = alias.Value.ToLower();
+                    if (alias.Key.ToLower() == commandString.ToLower())
+                    {
+                        commandStr = alias.Value.Command.ToLower();
+
+                    }
                 }
                 if (commandStr != string.Empty) command = _bot.Commands.Find(c => c.Command.ToLower() == commandStr.ToLower());
             }

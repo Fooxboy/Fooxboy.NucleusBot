@@ -75,7 +75,7 @@ namespace Fooxboy.NucleusBot.Services
             }
             var replyKeyboardMarkup = new ReplyKeyboardMarkup();
             replyKeyboardMarkup.Keyboard = keyboardArray;
-            replyKeyboardMarkup.ResizeKeyboard = keyboard.ResizeKeyboard;
+            replyKeyboardMarkup.ResizeKeyboard = true;
             replyKeyboardMarkup.OneTimeKeyboard = keyboard.OneTimeKeyboard;
             return replyKeyboardMarkup;
         }
