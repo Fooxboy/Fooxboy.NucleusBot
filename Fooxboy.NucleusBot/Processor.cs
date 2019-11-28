@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Fooxboy.NucleusBot.Enums;
 using VkNet.Model.Attachments;
 
 namespace Fooxboy.NucleusBot
@@ -50,12 +51,12 @@ namespace Fooxboy.NucleusBot
                 }
             }
             if (commandString.Split(' ')[0] == $"@{_bot.ScreenNameBot}") commandString = commandString.Split(' ').Length > 1?  commandString.Split(' ')[1]: "1";
-            var command = SearchCommand(commandString);
+            var command = SearchCommand(commandString, message.Platform);
             if (command is null) return;
             ExecuteCommand(command, message);
         }
 
-        private INucleusCommand SearchCommand(string commandString)
+        private INucleusCommand SearchCommand(string commandString, MessengerPlatform platform)
         {
             _logger.Trace("Поиск команды...");
             var command = _bot.Commands.Find(c => c.Command.ToLower() == commandString.ToLower());
@@ -72,7 +73,16 @@ namespace Fooxboy.NucleusBot
                 }
                 if (commandStr != string.Empty) command = _bot.Commands.Find(c => c.Command.ToLower() == commandStr.ToLower());
             }
-            if (command == null) return _bot.UnknownCommand;
+
+            if (command == null)
+            {
+                if (platform == MessengerPlatform.Telegam)
+                {
+                    command = _bot.Commands.Find(c => c.Command.ToLower() == commandString.Split(' ')[0].ToLower());
+                    if(command == null) return _bot.UnknownCommand;
+                }else return _bot.UnknownCommand;
+                
+            }
             return command;
         }
 
