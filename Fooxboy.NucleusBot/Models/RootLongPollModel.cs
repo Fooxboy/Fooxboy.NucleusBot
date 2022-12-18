@@ -14,12 +14,20 @@ namespace Fooxboy.NucleusBot.Models
 
         public class UpdateLongPoll
         {
+            [JsonProperty("group_id")]
+            public int GroupId { get; set; }
+
             [JsonProperty("type")]
             public string Type { get; set; }
+
+            [JsonProperty("event_id")]
+            public string EventId { get; set; }
+
+            [JsonProperty("v")]
+            public string V { get; set; }
+
             [JsonProperty("object")]
-            public object @Object { get; set; }
-            [JsonProperty("group_id")]
-            public long GroupId { get; set; }
+            public Object Object { get; set; }
         }
     }
 }

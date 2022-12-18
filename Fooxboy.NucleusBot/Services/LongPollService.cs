@@ -116,7 +116,7 @@ namespace Fooxboy.NucleusBot.Services
                         {
                             var model = new Message();
                             var obj = (JObject)update.Object;
-                            var message = obj.ToObject<VkNet.Model.Message>();
+                            var message = obj.ToObject<VkMessageBruh>().message;
                             model.Platform = Enums.MessengerPlatform.Vkontakte;
                             model.MessageVK = message;
                             NewMessageEvent?.Invoke(model);

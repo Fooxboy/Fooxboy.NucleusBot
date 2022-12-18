@@ -46,7 +46,7 @@ namespace Fooxboy.NucleusBot.Services
                         AppId = button.AppID ==0? null: button?.AppID,
                         Hash = button.Hash,
                         Label = button.Caption,
-                        OwnerId = button.OwnerID == 0? null: button?.OwnerID,
+                        OwnerId = button.OwnerID == 0? null: (button?.OwnerID as long?),
                         Payload = new PayloadBuilder().BuildToStringFromModel(button.Payload),
                         Type = button.Type,
                     };
